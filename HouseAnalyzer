@@ -1,0 +1,53 @@
+import java.util.*;
+class House {
+    private double price;
+    private double squareFootage;
+    public House(double price, double squareFootage) {
+        this.price = price;
+        this.squareFootage = squareFootage;
+    }
+   public double getPrice() {
+        return price;
+    }
+   public double getSquareFootage() {
+        return squareFootage;
+    }
+}
+public class HouseAnalyzer {
+    public static void main(String[] args) {
+        // Sample list of housing prices
+        List<House> houses = new ArrayList<>();
+        houses.add(new House(150000, 1200));
+        houses.add(new House(220000, 1500));
+        houses.add(new House(180000, 1300));
+        houses.add(new House(280000, 1800));
+        houses.add(new House(320000, 2000));
+
+        // Define price ranges
+        int[] priceRanges = {100000, 200000, 300000, 400000, 500000};
+        String[] priceRangeLabels = {"$0-100,000", "$100,000-200,000", "$200,000-300,000", "$300,000-400,000", "Above $400,000"};
+
+        // Initialize counters for each price range
+        int[] houseCount = new int[priceRanges.length];
+        double[] totalSquareFootage = new double[priceRanges.length];
+
+        // Count houses and calculate total square footage for each price range
+        for (House house : houses) {
+            double price = house.getPrice();
+            double squareFootage = house.getSquareFootage();
+            for (int i = 0; i < priceRanges.length; i++) {
+                if (price <= priceRanges[i]) {
+                    houseCount[i]++;
+                    totalSquareFootage[i] += squareFootage;
+                    break;
+                }
+            }
+        }
+        // Print results
+        System.out.println("Price Range\t\tNumber of Houses\t\tAverage Square Footage");
+        for (int i = 0; i < priceRanges.length; i++) {
+            double averageSquareFootage = totalSquareFootage[i] / houseCount[i];
+            System.out.printf("%s\t\t%d\t\t\t\t%.2f\n", priceRangeLabels[i], houseCount[i], averageSquareFootage);
+        }
+    }
+}
