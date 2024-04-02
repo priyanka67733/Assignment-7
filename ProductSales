@@ -1,0 +1,54 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class ProductSales {
+    public static void main(String[] args) {
+        // Example sales data
+        Map<String, Double> salesData = new HashMap<>();
+        salesData.put("product1", 75.0);
+        salesData.put("product2", 120.0);
+        salesData.put("product3", 45.0);
+        salesData.put("product4", 300.0);
+        salesData.put("product5", 150.0);
+
+        // Define price ranges
+        Map<String, Double> priceRanges = new HashMap<>();
+        priceRanges.put("$0-50", 50.0);
+        priceRanges.put("$50-100", 100.0);
+        priceRanges.put("$100-200", 200.0);
+        priceRanges.put("$200-500", 500.0);
+        priceRanges.put("$500-1000", 1000.0);
+
+        // Calculate sales by price range
+        Map<String, Integer> salesByPriceRange = new HashMap<>();
+        Map<String, Double> revenueByPriceRange = new HashMap<>();
+        for (String product : salesData.keySet()) {
+            double salePrice = salesData.get(product);
+            for (String priceRange : priceRanges.keySet()) {
+                if (salePrice <= priceRanges.get(priceRange)) {
+                    if (salesByPriceRange.containsKey(priceRange)) {
+                        salesByPriceRange.put(priceRange, salesByPriceRange.get(priceRange) + 1);
+                    } else {
+                        salesByPriceRange.put(priceRange, 1);
+                    }
+                    if (revenueByPriceRange.containsKey(priceRange)) {
+                        revenueByPriceRange.put(priceRange, revenueByPriceRange.get(priceRange) + salePrice);
+                    } else {
+                        revenueByPriceRange.put(priceRange, salePrice);
+                    }
+                    break;
+                }
+            }
+        }
+
+        // Print results
+        System.out.println("Number of products sold within each price range:");
+        for (String priceRange : salesByPriceRange.keySet()) {
+            System.out.printf("%s: %d\n", priceRange, salesByPriceRange.get(priceRange));
+        }
+        System.out.println("\nTotal revenue generated within each price range:");
+        for (String priceRange : revenueByPriceRange.keySet()) {
+            System.out.printf("%s: $%.2f\n", priceRange, revenueByPriceRange.get(priceRange));
+        }
+    }
+}-
