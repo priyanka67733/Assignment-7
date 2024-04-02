@@ -1,0 +1,66 @@
+import java.util.ArrayList;
+import java.util.List;
+class WeatherData {
+    double temperature;
+    double humidity;
+
+    WeatherData(double temperature, double humidity) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+    }
+}
+
+public class WeatherAnalyzer {
+
+    public static void main(String[] args) {
+        List<WeatherData> weatherDataList = new ArrayList<>();
+        // Add sample data to the list
+        weatherDataList.add(new WeatherData(15, 50));
+        weatherDataList.add(new WeatherData(-5, 60));
+        weatherDataList.add(new WeatherData(22, 40));
+        weatherDataList.add(new WeatherData(10, 70));
+        weatherDataList.add(new WeatherData(-2, 80));
+
+        analyzeWeatherData(weatherDataList);
+    }
+
+    private static void analyzeWeatherData(List<WeatherData> weatherDataList) {
+        int[] temperatureRanges = {0, 10, 20, 30, 40};
+        int[] temperatureCounts = new int[temperatureRanges.length - 1];
+        double[] temperatureAverages = new double[temperatureRanges.length - 1];
+
+        // Initialize humidity sums for each temperature range
+        double[] humiditySums = new double[temperatureRanges.length - 1];
+
+        for (WeatherData data : weatherDataList) {
+            int index = 0;
+            for (int i = 0; i < temperatureRanges.length - 1; i++) {
+                if (data.temperature >= temperatureRanges[i] && data.temperature < temperatureRanges[i + 1]) {
+                    index = i;
+                    break;
+                }
+            }
+
+            // Update temperature count for the current range
+            temperatureCounts[index]++;
+
+            // Add humidity to the sum for the current range
+            humiditySums[index] += data.humidity;
+        }
+
+        // Calculate average humidity for each temperature range
+        for (int i = 0; i < temperatureRanges.length - 1; i++) {
+            temperatureAverages[i] = humiditySums[i] / temperatureCounts[i];
+            System.out.println("Average humidity for temperatures between "
+                + temperatureRanges[i] + " and " + temperatureRanges[i + 1] + " is: "
+                + temperatureAverages[i]);
+        }
+
+        // Print the number of days in each temperature range
+        for (int i = 0; i < temperatureCounts.length; i++) {
+            System.out.println("Number of days with temperatures between "
+                + temperatureRanges[i] + " and " + temperatureRanges[i + 1] + " is: "
+                + temperatureCounts[i]);
+        }
+    }
+}
